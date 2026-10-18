@@ -1,17 +1,17 @@
-# Bellas Conecta — primera pantalla de ingreso (versión de prueba)
+# Bellas Conecta — página pública con pestaña de acceso
 
-## ¿Qué cambió?
-Al abrir el sitio solo se muestran **Iniciar sesión** y **Crear cuenta**. El registro solicita nombre, RUT chileno, teléfono, correo y contraseña. Al crear una cuenta, la persona entra a Bellas Conecta; al cerrar sesión vuelve a la pantalla de acceso. Los perfiles registrados en **este mismo navegador** se pueden volver a usar con correo y contraseña. La primera cuenta de prueba del navegador puede consultar la cartera de registros locales.
+## Cambios solicitados
 
-## Importante acerca de los registros
-Este prototipo funciona sin servidor usando el almacenamiento del navegador. **No constituye un registro central ni seguro para clientes reales**, y no sincroniza datos entre equipos. No usar con datos personales reales ni para operaciones comerciales. La seguridad de acceso para usuarios reales y administración privada requiere configurar Supabase o un servicio equivalente con políticas de acceso.
+- **La primera pantalla es Inicio**, con productos, servicios, estilistas y precios visibles sin cuenta.
+- En la esquina superior aparece una **mini pestaña «👤 Ingresar / Crear cuenta»**. Al tocarla, dentro de la misma aplicación se puede iniciar sesión o crear cuenta con nombre, RUT, teléfono, correo y contraseña.
+- Tras registrar una cuenta de prueba, la persona vuelve al Inicio y puede seguir navegando.
+- Cuando hay sesión, el botón se transforma en **«👤 Mi cuenta»**, donde puede actualizar datos o cerrar sesión.
+- Se mantiene la cartera de clientes para la cuenta administradora de prueba.
 
-## Publicar actualización en GitHub
-1. Descomprime el ZIP en tu computador.
-2. En tu repositorio de GitHub entra a **Add file → Upload files** y sube los archivos **de dentro de la carpeta**, no el ZIP.
-3. Pulsa **Commit changes** y comprueba que GitHub Pages esté activado en **Settings → Pages**, rama **main**, carpeta **/(root)**.
-4. Abre el enlace GitHub Pages de tu cuenta y actualiza con Ctrl+F5 si te aparece una versión antigua. Cierra también otras pestañas de la versión anterior.
+## Antes de publicar
 
-No se deben publicar hojas con RUT, teléfonos, contraseñas ni otros datos privados de clientes en GitHub.
+Esta versión sigue siendo **un prototipo de prueba**. Sin una base de datos configurada, los usuarios se guardan solo en el navegador donde se registraron. No hay sincronización entre teléfonos y computadores, ni un sistema multiusuario apto para producción. No ingreses datos personales reales hasta activar la base de datos protegida y ajustar las reglas de acceso.
 
-**Modo avanzado opcional:** `CONFIGURACION_BASE_DE_DATOS.sql` y `supabase-config.js` son archivos de instalación para configurar más adelante un servicio real. No es necesario configurarlos para probar esta versión local.
+El primer usuario creado en un navegador de prueba se considera administradora *solo en ese navegador*; este mecanismo no es seguro para un negocio real. Las cuentas reales y el acceso administrativo deben configurarse en un servicio seguro como Supabase. El archivo `CONFIGURACION_BASE_DE_DATOS.sql` se incluye como punto de partida para esa integración.
+
+**Para publicar en GitHub Pages:** descomprimir ZIP y subir todos los archivos contenidos en la carpeta a la raíz del repositorio (no el ZIP); reemplazar versiones antiguas y esperar que Pages se actualice. En el navegador refrescar con Ctrl+F5 si no aparecen los cambios.

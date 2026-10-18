@@ -1,5 +1,5 @@
 // Caché solo de archivos de presentación; NO almacena fichas, RUT, sesiones ni respuestas de Supabase.
-const CACHE = 'bellas-conecta-v3-acceso-primero';
+const CACHE = 'bellas-conecta-v4-publica-cuenta';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './supabase-config.js', './registro-clientes.js'];
 self.addEventListener('install', e => {e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting()});
 self.addEventListener('activate', e => {e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});

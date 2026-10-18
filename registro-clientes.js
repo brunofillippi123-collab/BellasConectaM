@@ -1,4 +1,4 @@
-/* Bellas Conecta: registro como primera pantalla.
+/* Bellas Conecta: cuenta opcional dentro de la aplicación pública.
    Modo local de PRUEBA funciona en este mismo navegador.
    Modo servidor opcional: Supabase con las credenciales públicas configuradas. */
 (() => {
@@ -40,6 +40,11 @@
     const btn=document.querySelector('#bottom button[onclick*="portal"]');if(btn){btn.hidden=!isAdmin;}
     const pc=$('portal-cartera');if(pc&&!isAdmin)pc.classList.remove('active');
   }
+  function actualizarBoton(){
+    const boton=$('accountMiniBtn');if(!boton)return;
+    boton.textContent=profile?'👤 Mi cuenta':'👤 Ingresar / Crear cuenta';
+    boton.setAttribute('aria-label',profile?'Abrir mi cuenta':'Iniciar sesión o crear cuenta');
+  }
   function goHome(){if(typeof go==='function')go('inicio'); window.scrollTo(0,0);}
   function applyProfile(){
     $('profileEmail').textContent=profile?.email||'';
@@ -75,7 +80,7 @@
   function enter(u,serverSession=null){
     profile=u;session=serverSession||{user:{id:u.id,email:u.email}};isAdmin=!!u.admin;
     $('accountSignedIn').hidden=false;$('accountSignedOut').hidden=true;
-    document.body.classList.add('bc-session');markAdmin();applyProfile();clearAviso();
+    document.body.classList.add('bc-session');markAdmin();applyProfile();clearAviso();actualizarBoton();
     // Mantiene aislada la experiencia de cada cuenta en el historial visible.
     if(typeof renderClientHistory==='function')renderClientHistory();
     goHome();
@@ -83,10 +88,10 @@
   function exit(){
     session=null;profile=null;isAdmin=false;authVersion++;
     $('accountSignedIn').hidden=true;$('accountSignedOut').hidden=false;
-    document.body.classList.remove('bc-session');$('cartera-registrada-tab').hidden=true;
+    document.body.classList.remove('bc-session');$('cartera-registrada-tab').hidden=true;markAdmin();actualizarBoton();
     $('carteraList').replaceChildren();
     $('loginForm').reset();$('signupForm').reset();modo('login');
-    window.scrollTo(0,0);
+    goHome();
   }
   async function signup(e){
     e.preventDefault();clearAviso();
@@ -160,9 +165,7 @@
     const a=document.createElement('a');a.href=url;a.download='bellas-conecta-clientes.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),400);
   }
   async function init(){
-    // Trasladar el formulario existente a portada, sin duplicar IDs.
-    $('authHere').appendChild($('accountMessages'));
-    $('authHere').appendChild($('accountSignedOut'));
+    // El formulario permanece en la pestaña opcional "Mi cuenta" dentro de la aplicación.
     $('showLogIn').addEventListener('click',()=>modo('login'));
     $('showSignUp').addEventListener('click',()=>modo('registro'));
     $('signupForm').addEventListener('submit',signup);
@@ -175,7 +178,7 @@
     $('carteraMas').addEventListener('click',()=>cargarCartera(false));
     $('carteraCSV').addEventListener('click',exportCsv);
     $('cuRut').addEventListener('blur',()=>{const r=rutValido($('cuRut').value);if(r)$('cuRut').value=r;});
-    modo('login');
+    modo('login');markAdmin();actualizarBoton();
     if(serverMode){
       db=window.supabase.createClient(cfg.url,cfg.anonKey,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
       db.auth.onAuthStateChange((event,s)=>{
